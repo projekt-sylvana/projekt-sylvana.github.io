@@ -22,13 +22,26 @@ function fail(msg) {
   load.classList.add("err"); loadT.textContent = msg; loadN.textContent = "";
 }
 
+// ------------------------------------------------------------------ texts (modell-en.html has lang="en")
+const TXT = document.documentElement.lang === "en" ? {
+  noWebgl: "This browser does not support WebGL, so the 3D model cannot be displayed.",
+  helpTouch: "<b>Rotate:</b> one finger. <b>Pan and zoom:</b> two fingers. <b>Double-tap:</b> centres the selected point.",
+  helpMouse: "<b>Rotate:</b> left mouse button. <b>Pan:</b> right mouse button or arrow keys. <b>Zoom:</b> scroll wheel. <b>Double-click:</b> centres the selected point.",
+  loadFail: "The model could not be loaded. Reloading the page usually helps.",
+} : {
+  noWebgl: "Ez a böngésző nem támogatja a WebGL-t, ezért a 3D modell nem jeleníthető meg.",
+  helpTouch: "<b>Forgatás:</b> egy ujjal. <b>Mozgatás és nagyítás:</b> két ujjal. <b>Dupla koppintás:</b> a kiválasztott pont kerül középre.",
+  helpMouse: "<b>Forgatás:</b> bal egérgomb. <b>Mozgatás:</b> jobb egérgomb vagy nyilak. <b>Nagyítás:</b> görgő. <b>Dupla kattintás:</b> a kiválasztott pont kerül középre.",
+  loadFail: "A modell betöltése nem sikerült. Az oldal újratöltése általában megoldja.",
+};
+
 // ------------------------------------------------------------------ renderer
 const canvas = $("#c");
 let renderer;
 try {
   renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
 } catch (e) {
-  fail("Ez a böngésző nem támogatja a WebGL-t, ezért a 3D modell nem jeleníthető meg.");
+  fail(TXT.noWebgl);
   throw e;
 }
 renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, coarse ? 1.5 : 2));
@@ -149,9 +162,7 @@ canvas.addEventListener("pointerup", (e) => {
 
 // ------------------------------------------------------------------ help text
 const help = $("#help");
-help.innerHTML = coarse
-  ? "<b>Forgatás:</b> egy ujjal. <b>Mozgatás és nagyítás:</b> két ujjal. <b>Dupla koppintás:</b> a kiválasztott pont kerül középre."
-  : "<b>Forgatás:</b> bal egérgomb. <b>Mozgatás:</b> jobb egérgomb vagy nyilak. <b>Nagyítás:</b> görgő. <b>Dupla kattintás:</b> a kiválasztott pont kerül középre.";
+help.innerHTML = coarse ? TXT.helpTouch : TXT.helpMouse;
 let helpTimer = 0;
 function hideHelpSoon() {
   if (helpTimer || !matchMedia("(max-width: 760px)").matches) return;
@@ -322,7 +333,7 @@ decoder()
   })
   .catch((e) => {
     console.error(e);
-    fail("A modell betöltése nem sikerült. Az oldal újratöltése általában megoldja.");
+    fail(TXT.loadFail);
   });
 
 // hooks for automated screenshots
