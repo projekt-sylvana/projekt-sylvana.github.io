@@ -95,6 +95,9 @@ controls.listenToKeyEvents(window);
 // ------------------------------------------------------------------ views
 const V = (x, y, z) => new THREE.Vector3(x, y, z);
 const VIEWS = {
+  // the two entrances (2026-11-02): along the portfolio's entrance cameras KAM_01 / KAM_11, stepped back (user)
+  hevizbe:    { t: V(-353, 5, -244), p: V(-748, 277, -160), fit: true },   // 2 x the camera distance: the main roads too
+  keszthelybe:{ t: V(669, 8, -28), p: V(970, 200, -169), fit: true },    // 2.4 x: the main-road junction in front
   attekintes: { t: V(190, 0, -90), p: V(-90, 560, 520), fit: true },
   heviz:      { t: V(-171, 8, -263), p: V(-123, 147, -442) },
   hazak:      { t: V(89, 4, -127), p: V(-6, 143, 9) },
